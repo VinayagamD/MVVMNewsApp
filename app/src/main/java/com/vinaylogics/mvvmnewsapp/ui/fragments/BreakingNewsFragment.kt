@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vinaylogics.mvvmnewsapp.R
 import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Resource
@@ -32,6 +33,16 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding = FragmentBreakingNewsBinding.bind(view)
         viewModel = (requireActivity() as NewsActivity).viewModel
         setupRecyclerView()
+
+        articleAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_bf_to_af,
+                bundle
+            )
+        }
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
             when(response){
                 is Resource.Success -> {

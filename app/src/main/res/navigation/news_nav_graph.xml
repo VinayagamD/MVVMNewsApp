@@ -21,7 +21,7 @@
         android:name="com.vinaylogics.mvvmnewsapp.ui.fragments.SavedNewsFragment"
         android:label="SavedNewsFragment" >
         <action
-            android:id="@+id/action_snf_toaf"
+            android:id="@+id/action_snf_to_af"
             app:destination="@id/articleFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -43,5 +43,9 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.vinaylogics.mvvmnewsapp.ui.fragments.ArticleFragment"
-        android:label="ArticleFragment" />
+        android:label="ArticleFragment" >
+        <argument
+            android:name="article"
+            app:argType="com.vinaylogics.mvvmnewsapp.bl.domain.models.Article" />
+    </fragment>
 </navigation>
