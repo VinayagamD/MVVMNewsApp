@@ -1,7 +1,12 @@
 package com.vinaylogics.mvvmnewsapp.ui.fragments
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.vinaylogics.mvvmnewsapp.R
+import com.vinaylogics.mvvmnewsapp.bl.viewmodels.NewsViewModel
+import com.vinaylogics.mvvmnewsapp.databinding.FragmentSearchNewsBinding
+import com.vinaylogics.mvvmnewsapp.ui.activities.NewsActivity
 
 /**
  * A simple [Fragment] subclass.
@@ -10,6 +15,14 @@ import com.vinaylogics.mvvmnewsapp.R
  */
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
+    lateinit var binding: FragmentSearchNewsBinding
+    lateinit var viewModel: NewsViewModel
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentSearchNewsBinding.bind(view)
+        viewModel = (activity as NewsActivity).viewModel
+    }
 
     companion object {
         /**

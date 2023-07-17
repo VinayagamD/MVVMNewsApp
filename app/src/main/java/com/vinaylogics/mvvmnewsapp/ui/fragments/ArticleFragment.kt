@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vinaylogics.mvvmnewsapp.R
-
+import com.vinaylogics.mvvmnewsapp.bl.viewmodels.NewsViewModel
+import com.vinaylogics.mvvmnewsapp.databinding.FragmentArticleBinding
+import com.vinaylogics.mvvmnewsapp.ui.activities.NewsActivity
 
 
 /**
@@ -16,8 +18,14 @@ import com.vinaylogics.mvvmnewsapp.R
  */
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
+    private lateinit var binding:  FragmentArticleBinding
+    private lateinit var viewModel: NewsViewModel
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentArticleBinding.bind(view)
+        viewModel = (activity as NewsActivity).viewModel
+    }
 
     companion object {
         /**
