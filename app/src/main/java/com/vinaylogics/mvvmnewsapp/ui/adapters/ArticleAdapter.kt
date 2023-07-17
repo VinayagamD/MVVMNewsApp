@@ -23,7 +23,7 @@ class ArticleAdapter: RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
         }
 
     }
-    private val differ = AsyncListDiffer(this, differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
     private var onItemClickListener: ((Article) -> Unit)? = null
 

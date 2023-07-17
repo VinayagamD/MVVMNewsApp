@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="MVVMNewsApp.BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="MVVMNewsApp.BaseTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryVariant">@color/background</item>
         <item name="colorOnPrimary">@color/white</item>
