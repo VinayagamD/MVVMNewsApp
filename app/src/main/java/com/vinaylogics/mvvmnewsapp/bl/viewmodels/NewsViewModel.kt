@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vinaylogics.mvvmnewsapp.bl.domain.db.repositories.ArticleRepository
+import com.vinaylogics.mvvmnewsapp.bl.domain.models.Article
 import com.vinaylogics.mvvmnewsapp.bl.domain.models.NewsResponse
 import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Resource
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ class NewsViewModel(
         searchNews.postValue(handleSearchNewsResponse(response))
     }
 
+
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -53,5 +55,15 @@ class NewsViewModel(
         }
 
         return Resource.Error(response.message())
+    }
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        articleRepository.upsert(article)
+    }
+
+    fun getSavedNews() = articleRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        articleRepository.deleteArticle(article)
     }
 }
