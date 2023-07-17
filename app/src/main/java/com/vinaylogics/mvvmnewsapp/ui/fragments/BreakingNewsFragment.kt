@@ -32,15 +32,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding = FragmentBreakingNewsBinding.bind(view)
         viewModel = (requireActivity() as NewsActivity).viewModel
         setupRecyclerView()
-
-    }
-
-    private fun setupRecyclerView(){
-        articleAdapter = ArticleAdapter()
-        binding.rvBreakingNews.apply {
-            adapter = articleAdapter
-            layoutManager = LinearLayoutManager(activity)
-        }
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
             when(response){
                 is Resource.Success -> {
@@ -62,6 +53,16 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             }
 
         })
+
+    }
+
+    private fun setupRecyclerView(){
+        articleAdapter = ArticleAdapter()
+        binding.rvBreakingNews.apply {
+            adapter = articleAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+
     }
 
     private fun hideProgressBar() {
