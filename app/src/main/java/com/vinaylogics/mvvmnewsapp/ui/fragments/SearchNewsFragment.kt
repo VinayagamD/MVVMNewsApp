@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.vinaylogics.mvvmnewsapp.R
 import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Constants
 import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Resource
@@ -80,6 +81,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                     hideProgressBar()
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
+                        Snackbar.make(view, "An error occured: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading-> {

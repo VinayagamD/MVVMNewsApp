@@ -1,41 +1,46 @@
 package com.vinaylogics.mvvmnewsapp.bl.viewmodels
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vinaylogics.mvvmnewsapp.bl.domain.db.repositories.ArticleRepository
 import com.vinaylogics.mvvmnewsapp.bl.domain.models.Article
 import com.vinaylogics.mvvmnewsapp.bl.domain.models.NewsResponse
 import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Resource
+import com.vinaylogics.mvvmnewsapp.core.NewsApplication
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 
 class NewsViewModel(
+    app: Application,
     private val articleRepository: ArticleRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewsPage = 1
-    var breakingNewsResponse: NewsResponse? = null
+    private var breakingNewsResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
-    var searchNewsResponse: NewsResponse? = null
+    private var searchNewsResponse: NewsResponse? = null
 
     init {
         getBreakingNews("us")
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
-        breakingNews.postValue(Resource.Loading())
-        val response = articleRepository.getBreakingNews(countryCode,breakingNewsPage)
-        breakingNews.postValue(handleBreakingNewsResponse(response))
+        safeBreakingNewsCall(countryCode)
+
     }
 
     fun searchNews(searchQuery:String) = viewModelScope.launch {
-        searchNews.postValue(Resource.Loading())
-        val response = articleRepository.searchNews(searchQuery, searchNewsPage)
-        searchNews.postValue(handleSearchNewsResponse(response))
+        safeSearchNewsCall(searchQuery)
+
     }
 
 
@@ -83,5 +88,54 @@ class NewsViewModel(
 
     fun deleteArticle(article: Article) = viewModelScope.launch {
         articleRepository.deleteArticle(article)
+    }
+
+    private suspend fun safeBreakingNewsCall(countryCode: String){
+        breakingNews.postValue(Resource.Loading())
+        try {
+            if(hasInternetConnection()) {
+                val response = articleRepository.getBreakingNews(countryCode, breakingNewsPage)
+                breakingNews.postValue(handleBreakingNewsResponse(response))
+            } else {
+                breakingNews.postValue(Resource.Error("No internet connection"))
+            }
+        }catch (t:Throwable){
+            when(t) {
+                is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
+                else -> breakingNews.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
+    private suspend fun safeSearchNewsCall(searchQuery: String){
+        searchNews.postValue(Resource.Loading())
+        try {
+            if(hasInternetConnection()) {
+                val response = articleRepository.searchNews(searchQuery, searchNewsPage)
+                searchNews.postValue(handleSearchNewsResponse(response))
+            } else {
+                searchNews.postValue(Resource.Error("No internet connection"))
+            }
+        }catch (t:Throwable){
+            when(t) {
+                is IOException -> searchNews.postValue(Resource.Error("Network Failure"))
+                else -> searchNews.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = getApplication<NewsApplication>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?:return false
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+
     }
 }

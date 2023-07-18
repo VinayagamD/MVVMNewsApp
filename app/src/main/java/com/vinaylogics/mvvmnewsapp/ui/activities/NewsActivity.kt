@@ -3,9 +3,6 @@ package com.vinaylogics.mvvmnewsapp.ui.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.vinaylogics.mvvmnewsapp.R
@@ -32,7 +29,7 @@ class NewsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val repository = ArticleRepository(ArticleDatabase(this))
-        val viewModelProviderFactory = NewsViewModelProviderFactory(repository)
+        val viewModelProviderFactory = NewsViewModelProviderFactory(application,repository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)[NewsViewModel::class.java]
         binding.bnvNews.setupWithNavController(navController)
 
