@@ -44,7 +44,7 @@ class ArticleAdapter: RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         with(differ.currentList[position]) {
           Glide.with(holder.binding.root).load(urlToImage).into(holder.binding.ivArticleImage)
-          holder.binding.tvSource.text = source.name
+          holder.binding.tvSource.text = source?.name
           holder.binding.tvTitle.text= title
           holder.binding.tvDescription.text = description
           holder.binding.tvPublishedAt.text = publishedAt

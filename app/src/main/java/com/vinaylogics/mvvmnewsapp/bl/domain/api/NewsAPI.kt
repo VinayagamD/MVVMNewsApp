@@ -1,7 +1,7 @@
 package com.vinaylogics.mvvmnewsapp.bl.domain.api
 
 import com.vinaylogics.mvvmnewsapp.bl.domain.models.NewsResponse
-import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Constants.API_KEY
+import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

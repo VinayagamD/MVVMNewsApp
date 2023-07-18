@@ -1,6 +1,6 @@
 package com.vinaylogics.mvvmnewsapp.bl.domain.api
 
-import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Constants.BASE_URL
+import com.vinaylogics.mvvmnewsapp.bl.domain.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

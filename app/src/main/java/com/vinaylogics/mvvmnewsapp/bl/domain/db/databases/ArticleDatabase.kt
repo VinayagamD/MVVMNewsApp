@@ -11,7 +11,7 @@ import com.vinaylogics.mvvmnewsapp.bl.domain.models.Article
 
 @Database(
     entities = [Article::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(SourceConverters::class)
 abstract class ArticleDatabase : RoomDatabase(){
@@ -31,6 +31,7 @@ abstract class ArticleDatabase : RoomDatabase(){
             Room.databaseBuilder(context.applicationContext,
             ArticleDatabase::class.java,
             "article_db.db"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
     }
 }
